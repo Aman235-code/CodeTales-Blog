@@ -1,11 +1,34 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import { ImCross } from "react-icons/im";
+import axios from "axios";
+import { URL } from "../url";
+import { useParams, useNavigate } from "react-router-dom";
+import { UserContext } from "../context/UserContext";
 
 const EditPost = () => {
+  const [title, settitle] = useState("");
+  const [desc, setdesc] = useState("");
+  const [file, setfile] = useState(null);
   const [cat, setcat] = useState("");
   const [cats, setcats] = useState([]);
+  const postId = useParams().id;
+  const { user } = useContext(UserContext);
+  const navigate = useNavigate();
+
+  const fetchPost = async () => {
+    try {
+      const res = await axios.get(URL + "/api/post/" + postId);
+
+      settitle(res.data.title);
+      setdesc(res.data.desc);
+      setfile(res.data.photo);
+      setcats(res.data.categories);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const addCategory = () => {
     let updatedCat = [...cats];
     updatedCat.push(cat);
@@ -17,6 +40,43 @@ const EditPost = () => {
     updatedCats.splice(i);
     setcats(updatedCats);
   };
+
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+    const newPost = {
+      title,
+      desc,
+      username: user.username,
+      userId: user._id,
+      categories: cats,
+    };
+
+    if (file) {
+      const data = new FormData();
+      const filename = Date.now() + file.name;
+      data.append("name", filename);
+      data.append("file", file);
+      newPost.photo = filename;
+      try {
+        const imgUpload = await axios.post(URL + "/api/upload", data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    try {
+      const res = await axios.put(URL + "/api/post/" + postId, newPost, {
+        withCredentials: true,
+      });
+      navigate("/posts/post/" + res.data._id);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchPost();
+  }, [postId]);
   return (
     <div>
       <Navbar />
@@ -31,14 +91,16 @@ const EditPost = () => {
             className="px-4 py-2 outline-none"
             name=""
             id=""
+            onChange={(e) => settitle(e.target.value)}
+            value={title}
             placeholder="Enter post title"
           />
           <input
+            onChange={(e) => setfile(e.target.files[0])}
             type="file"
             className="px-4"
             name=""
             id=""
-            placeholder="Enter post title"
           />
           <div className="flex flex-col">
             <div className="flex items-center space-x-4 md:space-x-8">
@@ -79,12 +141,17 @@ const EditPost = () => {
           <textarea
             className="px-4 py-2 outline-none"
             placeholder="Enter post description"
+            onChange={(e) => setdesc(e.target.value)}
+            value={desc}
             name=""
             id=""
             cols="30"
             rows="15"
           ></textarea>
-          <button className="bg-black w-full md:w-[20%] mx-auto text-white font-semibold px-4 py-2 md:text-x; text-lg">
+          <button
+            onClick={handleUpdate}
+            className="bg-black w-full md:w-[20%] mx-auto text-white font-semibold px-4 py-2 md:text-x; text-lg"
+          >
             Update
           </button>
         </form>

@@ -1,14 +1,13 @@
-import axios from "axios";
-import React, { useState, useContext } from "react";
-import { useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import React, { useState, useContext, useEffect } from "react";
 import Footer from "../components/Footer";
-import HomePosts from "../components/HomePosts";
 import Navbar from "../components/Navbar";
+import { Link, useLocation } from "react-router-dom";
 import { URL } from "../url";
+import HomePosts from "../components/HomePosts";
 import { UserContext } from "./../context/UserContext";
+import axios from "axios";
 
-const Home = () => {
+const MyBlogs = () => {
   const { search } = useLocation();
 
   const [posts, setposts] = useState([]);
@@ -19,7 +18,7 @@ const Home = () => {
   const fetchPosts = async () => {
     try {
       setloader(true);
-      const res = await axios.get(URL + "/api/post/" + search);
+      const res = await axios.get(URL + "/api/post/user/" + user._id);
       setposts(res.data);
       if (res.data.length === 0) {
         setnoResults(true);
@@ -36,8 +35,9 @@ const Home = () => {
     fetchPosts();
   }, [search]);
   return (
-    <>
+    <div>
       <Navbar />
+
       <div className="px-8 md:px-[200px] min-h-[80vh]">
         {loader ? (
           <div className="h-[40vh] flex justify-center items-center">
@@ -55,9 +55,10 @@ const Home = () => {
           ))
         )}
       </div>
+
       <Footer />
-    </>
+    </div>
   );
 };
 
-export default Home;
+export default MyBlogs;
