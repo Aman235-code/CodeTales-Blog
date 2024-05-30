@@ -6,6 +6,7 @@ import axios from "axios";
 import { URL } from "../url";
 import { useParams, useNavigate } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
+import { toast } from "react-toastify";
 
 const EditPost = () => {
   const [title, settitle] = useState("");
@@ -68,8 +69,16 @@ const EditPost = () => {
       const res = await axios.put(URL + "/api/post/" + postId, newPost, {
         withCredentials: true,
       });
+      if (res.status === 200) {
+        toast.success("Successfully edited a post !", {
+          position: "top-center",
+        });
+      }
       navigate("/posts/post/" + res.data._id);
     } catch (error) {
+      toast.error("Error in editing a post !", {
+        position: "top-center",
+      });
       console.log(error);
     }
   };
@@ -80,15 +89,15 @@ const EditPost = () => {
   return (
     <div>
       <Navbar />
-      <div className="px-6 md:px-[200px] mt-8">
-        <h1 className="font-bold md:text-2xl text-xl">Update a post</h1>
+      <div className="px-6 md:px-[200px] mt-8 font-serif text-lg h-[100vh]">
+        <h1 className=" md:text-2xl text-xl text-center">Update a post</h1>
         <form
           action=""
           className="w-full flex flex-col space-y-4 md:space-y-8 mt-4"
         >
           <input
             type="text"
-            className="px-4 py-2 outline-none"
+            className="px-4 py-2 outline-none border border-black rounded-lg"
             name=""
             id=""
             onChange={(e) => settitle(e.target.value)}
@@ -108,14 +117,14 @@ const EditPost = () => {
                 type="text"
                 value={cat}
                 onChange={(e) => setcat(e.target.value)}
-                className="px-4 py-2 outline-none"
+                className="px-4 py-2 outline-none border border-black rounded-lg"
                 placeholder="Enter Post Category"
               />
               <div
                 onClick={addCategory}
-                className="bg-black text-white px-4 py-2 font-semibold cursor-pointer"
+                className="bg-red-400 hover:bg-black text-white px-5 rounded-lg py-2 cursor-pointer"
               >
-                Add
+                Update
               </div>
             </div>
 
@@ -139,18 +148,18 @@ const EditPost = () => {
           </div>
 
           <textarea
-            className="px-4 py-2 outline-none"
+            className="px-4 py-2 outline-none border border-black rounded-lg"
             placeholder="Enter post description"
             onChange={(e) => setdesc(e.target.value)}
             value={desc}
             name=""
             id=""
             cols="30"
-            rows="15"
+            rows="5"
           ></textarea>
           <button
             onClick={handleUpdate}
-            className="bg-black w-full md:w-[20%] mx-auto text-white font-semibold px-4 py-2 md:text-x; text-lg"
+            className="bg-red-500 hover:text-black hover:bg-green-300 rounded-lg w-full md:w-[20%] mx-auto text-white px-4 py-2 md:text-x; text-lg"
           >
             Update
           </button>

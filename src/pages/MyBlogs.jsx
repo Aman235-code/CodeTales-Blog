@@ -19,6 +19,7 @@ const MyBlogs = () => {
     try {
       setloader(true);
       const res = await axios.get(URL + "/api/post/user/" + user._id);
+
       setposts(res.data);
       if (res.data.length === 0) {
         setnoResults(true);
@@ -44,7 +45,9 @@ const MyBlogs = () => {
             Loading
           </div>
         ) : noResults ? (
-          <h3 className="text-center font-bold mt-60">No Posts Available</h3>
+          <h3 className="text-center font-serif text-lg mt-60">
+            No Posts Available
+          </h3>
         ) : (
           posts.map((post) => (
             <>

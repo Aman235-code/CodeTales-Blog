@@ -73,16 +73,16 @@ const Profile = () => {
   return (
     <div>
       <Navbar />
-      <div className="px-8 md:px-[200px] mt-12 flex md:flex-row flex-col-reverse md:items-start">
+      <div className="px-8 md:px-[200px] mt-12 flex md:flex-row flex-col-reverse md:items-start font-serif text-lg h-[100vh]">
         <div className="flex flex-col md:w-[70%] w-full mt-8 md:mt-0">
-          <h1 className="text-xl font-bold mb-4">Your Posts</h1>
+          <h1 className="text-xl mb-4">Your Posts</h1>
           {posts?.map((p) => (
             <ProfilePosts key={p._id} p={p} />
           ))}
         </div>
         <div className="md:sticky md:top-16 flex justify-start md:justify-end items-start md:w-[30%] w-full md:items-end">
           <div className="flex flex-col space-y-4 items-start">
-            <h1 className="text-xl font-bold mb-4">Profile</h1>
+            <h1 className="text-xl mb-4">Profile</h1>
             <input
               type="text"
               value={username}
@@ -107,19 +107,19 @@ const Profile = () => {
             <div className="flex items-center space-x-4 mt-8">
               <button
                 onClick={handleUserUpdate}
-                className="text-white font-semibold bg-black px-4 py-2 hover:text-black hover:bg-gray-400"
+                className="text-white rounded-lg hover:bg-red-500 bg-black px-4 py-2 hover:text-black "
               >
                 Update
               </button>
               <button
                 onClick={handleUserDelete}
-                className="text-white font-semibold bg-black px-4 py-2 hover:text-black hover:bg-gray-400"
+                className="text-white  rounded-lg hover:bg-red-500 bg-black px-4 py-2 hover:text-blacks"
               >
                 Delete
               </button>
             </div>
             {updated && (
-              <h3 className="text-green-500 text-sm text-center mt-4">
+              <h3 className="text-green-500 text-lg text-center mt-4">
                 User Updated Successfully
               </h3>
             )}

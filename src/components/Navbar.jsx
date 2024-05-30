@@ -18,15 +18,17 @@ const Navbar = () => {
   const { user } = useContext(UserContext);
 
   return (
-    <div className="flex items-center justify-between px-6 md:px-[200px] py-4">
-      <h1 className="text-lg md:text-xl font-extrabold">
-        <Link to={"/"}>Code Tales</Link>
+    <div className="flex items-center justify-between px-6 md:px-[200px] py-4 font-serif text-lg bg-purple-300">
+      <h1 className="text-lg md:text-xl ">
+        <Link className="text-blue-800" to={"/"}>
+          Code Tales
+        </Link>
       </h1>
       {path === "/" && (
         <div className="flex justify-center items-center space-x-0">
           <p
             onClick={() => navigate(prompt ? "?search=" + prompt : "/")}
-            className="cursor-pointer"
+            className="cursor-pointer mr-3"
           >
             <VscSearch />
           </p>
@@ -34,17 +36,17 @@ const Navbar = () => {
             type="text"
             onChange={(e) => setprompt(e.target.value)}
             placeholder="Search a post"
-            className="outline-none px-3 py-1 "
+            className="rounded-lg outline-none px-6 py-1 "
           />
         </div>
       )}
       <div className="hidden md:flex items-center justify-center space-x-2 md:space-x-4">
         {user ? (
-          <h3>
+          <h3 className="border border-black bg-yellow-400 px-5 py-2 rounded-md hover:bg-red-500 cursor-pointer">
             <Link to={"/write"}>Write</Link>
           </h3>
         ) : (
-          <h3>
+          <h3 className="border border-black bg-yellow-400 px-5 py-2 rounded-md hover:bg-red-500 cursor-pointer">
             <Link to={"/login"}>Login</Link>
           </h3>
         )}
@@ -57,7 +59,7 @@ const Navbar = () => {
             {menu && <Menu />}
           </div>
         ) : (
-          <h3>
+          <h3 className="border border-black bg-yellow-400 px-5 py-2 rounded-md hover:bg-red-500 cursor-pointer">
             <Link to={"/register"}>Register</Link>
           </h3>
         )}

@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Footer from "../components/Footer";
 import axios from "axios";
 import { URL } from "../url";
+import { toast } from "react-toastify";
 
 const Register = () => {
   const [username, setusername] = useState("");
@@ -18,28 +19,38 @@ const Register = () => {
         email,
         password,
       });
-      setusername(res.data.username);
-      setemail(res.data.email);
-      setpassword(res.data.password);
-      navigate("/login");
-      seterror(false);
+      if (res.status === 200) {
+        toast.success("Registration Successful !", {
+          position: "top-center",
+        });
+        setusername(res.data.username);
+        setemail(res.data.email);
+        setpassword(res.data.password);
+        navigate("/login");
+        seterror(false);
+      }
     } catch (error) {
       seterror(true);
+      toast.error("Something Went Wrong !", {
+        position: "top-center",
+      });
       console.log(error);
     }
   };
 
   return (
     <>
-      <div className="flex items-center justify-between px-6 md:px-[200px] py-4">
-        <h1 className="text-lg md:text-xl font-extrabold">
-          <Link to={"/"}>Code Tales</Link>
+      <div className="flex items-center justify-between px-6 md:px-[200px] py-4 font-serif  bg-purple-300">
+        <h1 className="text-lg md:text-xl font-serif">
+          <Link className="text-blue-800" to={"/"}>
+            Code Tales
+          </Link>
         </h1>
-        <h3>
+        <h3 className="font-serif border border-black text-black py-2 px-4 bg-green-500 cursor-pointer hover:bg-black hover:text-white text-lg rounded-lg">
           <Link to={"/login"}>Login</Link>
         </h3>
       </div>
-      <div className="w-full flex justify-center items-center h-[80vh]">
+      <div className="w-full flex justify-center items-center h-[100vh] font-serif  bg-purple-300 text-lg">
         <div className="flex flex-col justify-center items-center space-y-4 w-[80%] md:w-[25%]">
           <h1 className="text-xl font-bold text-left">Create an account</h1>
           <input
@@ -65,7 +76,7 @@ const Register = () => {
           />
           <button
             onClick={handleRegister}
-            className="w-full px-4 py-4 text-lg font-bold text-white bg-blue rounded-lg hover: bg-green-500 hover:text-black"
+            className="w-full px-4 py-4 text-lg font-bold  bg-red-500 text-white rounded-lg hover:bg-green-500 hover:text-black"
           >
             Register
           </button>
@@ -74,7 +85,7 @@ const Register = () => {
           )}
           <div className="flex justify-center items-center space-x-3">
             <p>Already have an account?</p>
-            <p className="text-gray-500 hover:text-black">
+            <p className="text-gray-500 hover:text-red-700 ">
               <Link to={"/login"}>Login</Link>
             </p>
           </div>
